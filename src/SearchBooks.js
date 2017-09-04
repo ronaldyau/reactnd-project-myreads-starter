@@ -7,22 +7,30 @@ import Book from './Book'
 class SearchBooks extends Component {
   state = {
     searchQuery: '',
-    foundBooks: []
+    foundBooks: [],
+    error: false
   }
 
   searchBooks = (event) => {
-    const searchQuery = event.target.value.trim()
+    const searchQuery = event.target.value
     this.setState({ searchQuery: searchQuery })
 
     if (searchQuery) {
       BooksAPI.search(searchQuery, 25).then((books) => {
-        this.setState({foundBooks: books})
+        if (books.error) {
+          this.setState({ foundBooks: [], error: 'There was an error searching for ' + searchQuery })
+        } else if (books.length > 0) {
+          this.setState({foundBooks: books, error: '' })
+        } else {
+          this.setState({ foundBooks: [], error: 'No books found for "' +  searchQuery + '"'})
+        }
       })
-    } else this.setState({foundBooks: []})
+    } else {
+      this.setState({foundBooks: [], error: ''})
+    }
   }
 
   render() {
-    console.log(this.state.foundBooks)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -36,8 +44,10 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid"> 
-            {this.state.foundBooks.map((book) => (
+            {this.state.foundBooks && this.state.foundBooks.map((book) => (
               <Book
+                coverWidth={128}
+                coverHeight={188}
                 book={book}
                 books={this.props.books}
                 key={book.id}
@@ -46,12 +56,18 @@ class SearchBooks extends Component {
             ))}
           </ol>
         </div>
+        { this.state.error && (
+          <div>
+            <h3>{this.state.error}</h3>
+          </div>
+        )}        
       </div>
     )
   }
 }
 
 SearchBooks.propTypes = {
+    books: PropTypes.array.isRequired,
     changeShelf: PropTypes.func.isRequired
 }
 

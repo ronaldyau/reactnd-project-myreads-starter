@@ -12,6 +12,8 @@ class BookShelf extends Component {
                 <ol className="books-grid">
                     {books.map((book) => (
                         <Book
+                            coverWidth={128}
+                            coverHeight={188}
                             book={book}
                             books={this.props.books}
                             key={book.id}

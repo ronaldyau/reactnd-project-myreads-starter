@@ -4,14 +4,12 @@ import PropTypes from 'prop-types'
 class BookShelfChanger extends Component {
     
     render() {
-        const shelves = [
+        const availableShelves = [
             {value:'currentlyReading', name: 'Currently Reading'},
             {value:'wantToRead', name: 'Want to Read'},
             {value:'read', name: 'Read'}
         ]
 
-        let availableShelves = shelves.filter(shelf => this.props.book.shelf !== shelf.value)
-    
         return (
             <div className="book-shelf-changer">
                 <select onChange={(event) => this.props.changeShelf(this.props.book, event.target.value)}
