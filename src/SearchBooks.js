@@ -20,6 +20,7 @@ class SearchBooks extends Component {
         if (books.error) {
           this.setState({ foundBooks: [], error: 'There was an error searching for ' + searchQuery })
         } else if (books.length > 0) {
+          books.map(book => (this.props.books.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)))
           this.setState({foundBooks: books, error: '' })
         } else {
           this.setState({ foundBooks: [], error: 'No books found for "' +  searchQuery + '"'})

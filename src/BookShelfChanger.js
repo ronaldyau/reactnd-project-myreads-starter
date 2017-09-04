@@ -9,11 +9,10 @@ class BookShelfChanger extends Component {
             {value:'wantToRead', name: 'Want to Read'},
             {value:'read', name: 'Read'}
         ]
-
         return (
             <div className="book-shelf-changer">
                 <select onChange={(event) => this.props.changeShelf(this.props.book, event.target.value)}
-                defaultValue={this.props.book.shelf}>
+                defaultValue={this.props.book.shelf || 'none'}>
                 <option value="none" disabled>Move to...</option>
                 {availableShelves.map((shelf) => (
                     <option value={shelf.value} key={shelf.value}>{shelf.name}</option>
